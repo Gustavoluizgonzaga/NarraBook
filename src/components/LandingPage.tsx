@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Mic, Zap, Clock, Save, Keyboard, ChevronRight, Heart, Copy, CheckCircle2, QrCode, HelpCircle, X, Settings, Smartphone } from 'lucide-react';
+import qrcodeImg from '../assets/qrcode.jpg';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -180,7 +181,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, onViewLibrary
             {/* QR Code Image */}
             <div className="w-48 h-48 bg-white rounded-2xl border border-foreground/10 flex items-center justify-center p-3 shadow-sm">
               <img 
-                src="/qrcode.jpg" 
+                src={qrcodeImg} 
                 alt="QR Code PIX" 
                 className="w-full h-full object-contain"
               />
