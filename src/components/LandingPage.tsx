@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Mic, Zap, Clock, Save, Keyboard, ChevronRight, Heart, Copy, CheckCircle2, QrCode, HelpCircle, X, Settings, Smartphone } from 'lucide-react';
-import qrcodeImg from '../assets/qrcode.jpg';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -9,14 +8,13 @@ interface LandingPageProps {
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onStart, onViewLibrary }) => {
-  const [copied, setCopied] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showHelpModal, setShowHelpModal] = useState(false);
-  const pixKey = "55353853000107";
 
-  const handleCopyPix = () => {
-    navigator.clipboard.writeText(pixKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyPix = (value: string, id: string) => {
+    navigator.clipboard.writeText(value);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
   };
 
   return (
@@ -178,28 +176,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart, onViewLibrary
           </p>
           
           <div className="flex flex-col items-center gap-4 w-full mt-6 bg-foreground/[0.02] p-8 rounded-3xl border border-foreground/5">
-            {/* QR Code Image */}
-            <div className="w-48 h-48 bg-white rounded-2xl border border-foreground/10 flex items-center justify-center p-3 shadow-sm">
-              <img 
-                src={qrcodeImg} 
-                alt="QR Code PIX" 
-                className="w-full h-full object-contain"
-              />
-            </div>
             
-            <p className="text-xs text-foreground/60 mt-4">CNPJ</p>
-            
-            {/* Copy/Paste Code */}
-            <div className="w-full flex items-center gap-2 bg-foreground/5 p-2 rounded-xl border border-foreground/10">
-              <code className="text-sm truncate flex-1 text-center font-mono text-foreground font-bold">55.353.853/0001-07</code>
-              <button 
-                onClick={handleCopyPix}
-                className="p-3 bg-accent text-background rounded-lg transition-transform hover:scale-105 shrink-0 flex items-center justify-center w-12 h-12"
-                title="Copiar chave PIX"
-              >
-                {copied ? <CheckCircle2 className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-              </button>
+            {/* Key 1: Email */}
+            <div className="w-full flex flex-col gap-2">
+              <p className="text-xs text-foreground/60 text-left pl-1">E-mail</p>
+              <div className="w-full flex items-center gap-2 bg-foreground/5 p-2 rounded-xl border border-foreground/10">
+                <code className="text-sm truncate flex-1 text-center font-mono text-foreground font-bold">glgdcos@gmail.com</code>
+                <button 
+                  onClick={() => handleCopyPix('glgdcos@gmail.com', 'email')}
+                  className="p-3 bg-accent text-background rounded-lg transition-transform hover:scale-105 shrink-0 flex items-center justify-center w-12 h-12"
+                  title="Copiar E-mail"
+                >
+                  {copiedId === 'email' ? <CheckCircle2 className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                </button>
+              </div>
             </div>
+
+            {/* Key 2: CNPJ */}
+            <div className="w-full flex flex-col gap-2 mt-2">
+              <p className="text-xs text-foreground/60 text-left pl-1">CNPJ</p>
+              <div className="w-full flex items-center gap-2 bg-foreground/5 p-2 rounded-xl border border-foreground/10">
+                <code className="text-sm truncate flex-1 text-center font-mono text-foreground font-bold">55.353.853/0001-07</code>
+                <button 
+                  onClick={() => handleCopyPix('55353853000107', 'cnpj')}
+                  className="p-3 bg-accent text-background rounded-lg transition-transform hover:scale-105 shrink-0 flex items-center justify-center w-12 h-12"
+                  title="Copiar CNPJ"
+                >
+                  {copiedId === 'cnpj' ? <CheckCircle2 className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
           </div>
         </div>
 
