@@ -21,7 +21,13 @@ export default function App() {
   const [view, setView] = useState<'landing' | 'upload' | 'player' | 'library'>('landing');
   const [library, setLibrary] = useState<LibraryEntry[]>([]);
   const [currentBookId, setCurrentBookId] = useState<string | null>(null);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) as 'dark' | 'light';
+      return savedTheme || 'dark';
+    }
+    return 'dark';
+  });
   const [isParsing, setIsParsing] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
@@ -33,7 +39,6 @@ export default function App() {
   useEffect(() => {
     const savedLibrary = localStorage.getItem(STORAGE_KEY_LIBRARY);
     const savedCurrentId = localStorage.getItem(STORAGE_KEY_CURRENT_ID);
-    const savedTheme = localStorage.getItem(STORAGE_KEY_THEME) as 'dark' | 'light';
 
     if (savedLibrary) {
       try {
@@ -44,9 +49,6 @@ export default function App() {
     }
     if (savedCurrentId) {
       setCurrentBookId(savedCurrentId);
-    }
-    if (savedTheme) {
-      setTheme(savedTheme);
     }
   }, []);
 
